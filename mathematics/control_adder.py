@@ -1,6 +1,7 @@
 """
 Implementation of control adder from :
 """
+
 import cirq
 
 class ControlAdder:
