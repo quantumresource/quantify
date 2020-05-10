@@ -9,3 +9,7 @@ from .carry_ripple_8t_adder import (
 from .recycled_gate import (
     RecycledGate,
 )
+
+from .carry_using_dirty_ancilla import (
+    CarryUsingDirtyAncilla,
+)
