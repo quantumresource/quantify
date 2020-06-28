@@ -9,3 +9,4 @@ from .search_cnot_pattern import SearchCNOTPattern
 from .parallelise_cnots import ParallelizeCNOTSToLeft
 
 from .lookahead_analysis import LookAheadAnalysis
+from .markov_analysis import MarkovAnalysis
