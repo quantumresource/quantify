@@ -1,4 +1,4 @@
-from mathematics.thaplyal1706.multiplier import Multiplier
+from mathematics.thaplyal1706 import QimMultiplier
 from qramcircuits.toffoli_decomposition import *
 import optimizers as qopt
 from utils.counting_utils import *
@@ -7,7 +7,7 @@ A = [cirq.NamedQubit('A'+str(i)) for i in range(4)]
 B = [cirq.NamedQubit('B'+str(i)) for i in range(4)]
 control = cirq.NamedQubit('ctrl')
 # ct = ControlAdder(A, B, control).construct_circuit()
-ct = Multiplier(A, B).multiply()
+ct = QimMultiplier(A, B).multiply()
 print(ct.moments)
 c=cirq.Circuit(ToffoliDecomposition.construct_decomposed_moments(ct.moments, ToffoliDecompType.FOUR_ANCILLA_TDEPTH_1_A))
 # ct = multiplier(A,B).multiply()

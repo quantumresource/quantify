@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-class LookaheadAnalysis:
+class LookAheadAnalysis:
 
     def __init__(self, circuit):
         self.circuit = circuit

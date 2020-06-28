@@ -1,4 +1,4 @@
-from optimizers.lookahead_analysis import LookaheadAnalysis as ma
+from optimizers.lookahead_analysis import LookAheadAnalysis as ma
 import cirq
 
 qubits = [cirq.NamedQubit(str(i)) for i in range(3)]

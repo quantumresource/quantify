@@ -1,6 +1,6 @@
 import cirq
 import mathematics
-from optimizers import LookaheadAnalysis
+from optimizers import LookAheadAnalysis
 from optimizers import MarkovAnalysis
 from qramcircuits.toffoli_decomposition import ToffoliDecomposition, ToffoliDecompType
 
@@ -15,7 +15,7 @@ def main():
     print(circuit)
 
     look_ahead_window = 3
-    lookahead = LookaheadAnalysis(circuit)
+    lookahead = LookAheadAnalysis(circuit)
     data_look = lookahead.lookahead(look_ahead_window,
                                     lookahead.find_T_gates,
                                     )
