@@ -2,6 +2,7 @@
 
 
 QUANTIFY is an alpha tool based on Google Cirq. It includes:
+* start
 * a library of Toffoli decompositions
 * novel optimisation strategies compatible with surface code layouts
 * circuit structure analysis tools
