@@ -16,6 +16,8 @@ code layouts
 [![arXiv](https://img.shields.io/badge/arXiv-1906.06400-b31b1b.svg)](https://arxiv.org/abs/1906.06400)
 
 
+[ISVLSI QCW Presentation of QUANTIFY](https://docs.google.com/presentation/d/1zcHJ25BphWS48wtRnaEK8xZZjGzoP6Q6LfkSKXuvHuY/edit?usp=sharing)
+
 Documentation, code and examples are WIP.
 
 
