@@ -20,14 +20,6 @@ def main():
         for i in range(nr_qubits):
             qubits.append(cirq.NamedQubit("a" + str(i)))
 
-        # #
-        # #
-        # # #Create the search
-        # #
-        search = [0, 1, 2, 3]
-        # search = list(range(0, 15))
-        #
-
         """
             Bucket brigade
         """
@@ -46,8 +38,6 @@ def main():
         bbcircuit = bb.BucketBrigade(qubits,
                                      decomp_scenario = decomp_scenario)
         stop1 = time.time() - start1
-        # print(bbcircuit.circuit.to_text_diagram(use_unicode_characters=False,
-        #                                         qubit_order = bbcircuit.qubit_order))
 
 
         # Simulation with parallelisation optimisation
@@ -56,14 +46,6 @@ def main():
         bbcircuit = bb.BucketBrigade(qubits,
                                      decomp_scenario=decomp_scenario)
         stop2 = time.time() - start2
-        # print(bbcircuit.circuit.to_text_diagram(use_unicode_characters=False,
-        #                                         qubit_order = bbcircuit.qubit_order))
-
-
-
-
-        # print(bbcircuit.circuit.to_text_diagram(use_unicode_characters=False,
-        #                                         qubit_order = bbcircuit.qubit_order))
 
         # #Verification
         bbcircuit.verify_number_qubits()
@@ -80,49 +62,6 @@ def main():
 
         end = time.time()
         print("--> exp bucket brigade, ", nr_qubits, ",", stop1 , ",", stop2, ",", flush=True)
-
-    # qopt.CommuteTGatesToStart().optimize_circuit(bbcircuit.circuit)
-    #
-    # print(bbcircuit.circuit)
-
-    # qopt.SearchCNOTPattern().optimize_circuit(bbcircuit.circuit)
-
-    # qopt.CancelNghCNOTs().apply_until_nothing_changes(bbcircuit.circuit,
-    #                                                   cu.count_cnot_of_circuit)
-    # print(bbcircuit.circuit)
-    # print("*** Large Depth Small Width:")
-    # """
-    # be sure while testing that the number of search values are a power of 2
-    # and that the binary decomposition of each search value is less or equal to the number of qubits' address
-    # like if we have 4 qubits then the search values should range between 0 and 15
-    # """
-    # ldsmcircuit = ldsw.LargeDepthSmallWidth(qubits,
-    #                                         search,
-    #                                         decomp_type = MPMCTDecompType.ALLOW_DECOMP)
-    # print((ldsmcircuit.circuit))
-    # print("Verify N_q:      {}\n".format(ldsmcircuit.verify_number_qubits()))
-    # print("Verify D:        {}\n".format(ldsmcircuit.verify_depth()))
-    # print("Verify T_c:      {}\n".format(ldsmcircuit.verify_T_count()))
-    # print("Verify T_d:      {}\n".format(ldsmcircuit.verify_T_depth()))
-    # print("Verify H_c:      {}\n".format(ldsmcircuit.verify_hadamard_count()))
-    # print("Verify CNOT_c:   {}\n".format(ldsmcircuit.verify_cnot_count()))
-    # #
-    # qopt.CommuteTGatesToStart().optimize_circuit(ldsmcircuit.circuit)
-
-    # print("*** Small Depth Large Width:")
-    # #be sure while testing that the number of search values are a power of 2
-    # #and that the binary decomposition of each search value is less or equal to the number of qubits' address
-    # # like if we have 4 qubits then the search values should range between 0 and 15
-    # sdlwcircuit = sdlw.SmallDepthLargeWidth(qubits,
-    #                                         search,
-    #                                         decomp_type = MPMCTDecompType.ALLOW_DECOMP)
-    # print(sdlwcircuit.circuit)
-    # print("Verify N_q:      {}\n".format(sdlwcircuit.verify_number_qubits()))
-    # print("Verify D:        {}\n".format(sdlwcircuit.verify_depth()))  #still working on the depth
-    # print("Verify T_d:      {}\n".format(sdlwcircuit.verify_T_depth()))
-    # print("Verify T_c:      {}\n".format(sdlwcircuit.verify_T_count()))
-    # print("Verify H_c:      {}\n".format(sdlwcircuit.verify_hadamard_count()))
-    # print("Verify CNOT_c:   {}\n".format(sdlwcircuit.verify_cnot_count()))
 
 
 if __name__ == "__main__":

@@ -15,7 +15,7 @@ def count_op_depth(circuit, gate_types):
     return op_depth
 
 
-def count_ops(circuit, gate_types):
+def count_ops(circuit, gate_types, gate_type_tuple = ()):
     op_count = 0
 
     for moment in circuit:
@@ -23,7 +23,9 @@ def count_ops(circuit, gate_types):
             # if a gate is found in this moment,
             #  then increase depth and break to the next moment
             if isinstance(operation, cirq.GateOperation) \
-                    and operation.gate in gate_types:
+                and (operation.gate in gate_types
+                    or isinstance(operation.gate, gate_type_tuple)):
+
                 op_count += 1
 
     return op_count
@@ -38,6 +40,7 @@ def count_h_of_circuit(circuit):
     return count_ops(circuit, [cirq.H])
 
 def count_cnot_of_circuit(circuit):
+    #return count_ops(circuit, [cirq.CNOT], (cirq.ControlledGate, ))
     return count_ops(circuit, [cirq.CNOT])
 
 def count_toffoli_of_circuit(circuit):

@@ -1,12 +1,7 @@
 #!/bin/bash
 
-sudo cpufreq-set --cpu 0 --governor performance
-sudo cpufreq-set --cpu 1 --governor performance
-sudo cpufreq-set --cpu 2 --governor performance
-sudo cpufreq-set --cpu 3 --governor performance
-sudo cpufreq-set --cpu 4 --governor performance
-sudo cpufreq-set --cpu 5 --governor performance
-sudo cpufreq-set --cpu 6 --governor performance
-sudo cpufreq-set --cpu 7 --governor performance
+for ((i=0;i<8;i++)); do
+    cpufreq-set -c $i --max $1MHz -r -g performance
+done
 
 cat /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
