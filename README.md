@@ -1,4 +1,4 @@
-# QUANTIFY
+# QUANTIFY [![arXiv](https://img.shields.io/badge/arXiv-2007.10893-b31b1b.svg)](https://arxiv.org/abs/2007.10893)
 
 QUANTIFY is a collection of tools used for the analysis and optimisation 
 of quantum circuits. QUANTIFY is based on Google Cirq. QUANTIFY includes:
@@ -30,3 +30,14 @@ To use the .venv
 `source .venv/bin/activate`
 
 Examples are in the `examples` and `tests` folder.
+
+To cite, please use
+```
+@INPROCEEDINGS{quantify2020,
+  author={O. {Oumarou} and A. {Paler} and R. {Basmadjian}},
+  booktitle={2020 IEEE Computer Society Annual Symposium on VLSI (ISVLSI)}, 
+  title={QUANTIFY: A Framework for Resource Analysis and Design Verification of Quantum Circuits}, 
+  year={2020},
+  pages={126-131},}
+
+```
