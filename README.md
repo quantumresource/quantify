@@ -38,8 +38,6 @@ To cite, please use
   booktitle={2020 IEEE Computer Society Annual Symposium on VLSI (ISVLSI)}, 
   title={QUANTIFY: A Framework for Resource Analysis and Design Verification of Quantum Circuits}, 
   year={2020},
-  volume={},
-  number={},
   pages={126-131},}
 
 ```
