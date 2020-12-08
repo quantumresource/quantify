@@ -39,6 +39,10 @@ class ToffoliDecompType(Enum):
     ZERO_ANCILLA_TDEPTH_4 = auto()
     ZERO_ANCILLA_TDEPTH_4_COMPUTE = auto()
 
+    # Relative phase Toffoli (Figure 18/19 from arxiv:2010.00255)
+    ZERO_ANCILLA_CNOT_3 = auto
+    ZERO_ANCILLA_CNOT_4 = auto
+
 
 class ToffoliDecomposition():
 
@@ -490,6 +494,37 @@ class ToffoliDecomposition():
                 cirq.Moment([cirq.CNOT(self.qubits[1], self.qubits[2])]),
 
                 cirq.Moment([cirq.H.on(self.target_qubit)])
+            ]
+
+            return moments
+
+        elif self.decomp_type == ToffoliDecompType.ZERO_ANCILLA_CNOT_3:
+            moments = [
+                cirq.Moment([cirq.H(self.target_qubit)]),
+                cirq.Moment([cirq.T(self.target_qubit)]),
+                cirq.Moment([cirq.CNOT(self.qubits[1], self.target_qubit)]),
+                cirq.Moment([cirq.T(self.target_qubit) ** -1]),
+                cirq.Moment([cirq.CNOT(self.qubits[0], self.target_qubit)]),
+                cirq.Moment([cirq.T(self.target_qubit)]),
+                cirq.Moment([cirq.CNOT(self.qubits[1], self.target_qubit)]),
+                cirq.Moment([cirq.T(self.target_qubit) ** -1]),
+                cirq.Moment([cirq.H(self.target_qubit)])
+            ]
+
+            return moments
+
+        elif self.decomp_type == ToffoliDecompType.ZERO_ANCILLA_CNOT_4:
+            moments = [
+                cirq.Moment([cirq.H(self.target_qubit)]),
+                cirq.Moment([cirq.CNOT(self.qubits[1], self.target_qubit)]),
+                cirq.Moment([cirq.T(self.target_qubit) ** -1]),
+                cirq.Moment([cirq.CNOT(self.qubits[0], self.target_qubit)]),
+                cirq.Moment([cirq.T(self.target_qubit)]),
+                cirq.Moment([cirq.CNOT(self.qubits[1], self.target_qubit)]),
+                cirq.Moment([cirq.T(self.target_qubit) ** -1]),
+                cirq.Moment([cirq.CNOT(self.qubits[0], self.target_qubit)]),
+                cirq.Moment([cirq.T(self.target_qubit)]),
+                cirq.Moment([cirq.H(self.target_qubit)])
             ]
 
             return moments
