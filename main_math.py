@@ -2,27 +2,28 @@ import cirq
 
 import optimizers as qopt
 import mathematics
+import mathematics.draper0406142 as drp
+from qramcircuits.toffoli_decomposition import *
 
 
 def main():
 
     print("Hello Mathematics circuits!")
 
-    # print(mathematics.CarryRipple4TAdder(nr_qubits=4,
-    #                                use_dual_ancilla=False))
+    decompositions = [
+        ToffoliDecompType.NO_DECOMP,
+        ToffoliDecompType.NO_DECOMP,
+        ToffoliDecompType.NO_DECOMP,
+        ToffoliDecompType.NO_DECOMP
+    ]
 
+    n = 10
+    A = [cirq.NamedQubit(f"{i}_A") for i in range(n)]
+    B = [cirq.NamedQubit(f"{i}_B") for i in range(n)]
 
-    carry_ripple_4t = mathematics.CarryRipple4TAdder(nr_qubits = 4,
-                                                     use_dual_ancilla = False)
-    print(carry_ripple_4t)
+    adder = drp.CarryLookaheadAdder(A, B, decompositions)
 
-    # n_c = cirq.Circuit(carry_ripple_4t.circuit.all_operations())
-    # print(n_c.to_text_diagram(qubit_order=carry_ripple_4t.qubit_order,
-    #                           use_unicode_characters=False))
-
-    # carry_ripple_8t = mathematics.CarryRipple8TAdder(nr_qubits=4,
-    #                                                  use_dual_ancilla=False)
-    # print(carry_ripple_8t)
+    print(adder.circuit)
 
 if __name__ == "__main__":
     main()
