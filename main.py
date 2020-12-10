@@ -122,9 +122,23 @@ def main():
     # print("Verify T_c:      {}\n".format(sdlwcircuit.verify_T_count()))
     # print("Verify H_c:      {}\n".format(sdlwcircuit.verify_hadamard_count()))
     # print("Verify CNOT_c:   {}\n".format(sdlwcircuit.verify_cnot_count()))
-    A = [cirq.NamedQubit("A"+str(i)) for i in range(10)]
-    B = [cirq.NamedQubit("B"+str(i)) for i in range(10)]
+    
+    """
+        CLA example
+    """
+    # Size of the operand; At this stage always gives the even number >= to the wanted size
+    n = 10
+    
+    # First operand
+    A = [cirq.NamedQubit("A"+str(i)) for i in range(n)]
+    
+    # Second operand
+    B = [cirq.NamedQubit("B"+str(i)) for i in range(n)]
+    
+    # CLA class with the default decomposition strategy (NO_DECOMP)
     cl = CarryLookaheadAdder(A, B)
+    
+    # Printing the CLA circuit
     print(cl.circuit)
 
 if __name__ == "__main__":
