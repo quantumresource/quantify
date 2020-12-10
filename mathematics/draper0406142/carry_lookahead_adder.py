@@ -8,7 +8,7 @@ import math as mt
 from qramcircuits.toffoli_decomposition import ToffoliDecomposition, ToffoliDecompType
 
 class CarryLookaheadAdder:
-  def __init__(self, A, B, decompositon_strategy = [ToffoliDecompType.NO_DECOMP]*2):
+  def __init__(self, A, B, decompositon_strategy = [(ToffoliDecompType.NO_DECOMP, ToffoliDecompType.NO_DECOMP)]*2):
     """
       params: A: quantum register holding the first integer operand
       params: B: quantum register holding the second integer operand
@@ -73,6 +73,8 @@ class CarryLookaheadAdder:
 
     start = 0
     k = 0
+    temp = n-1
+    
     for i in range(l-1):
       index = 2**i
       start += index
@@ -91,10 +93,11 @@ class CarryLookaheadAdder:
           pass
         else:
           # print(i1, i2, target)
+          # print(i1, i2, target)
           g_round.append(cirq.TOFFOLI(ancillae1[i1], ancillae2[i2], ancillae1[target]))
           k += 2
-      k = k_anc + (n-2)//(2**(i+1))
-
+      k = k_anc + temp//2
+      temp = (temp//2-1)
     # C-round
     # First moment of C-round
     for i in range(1, n-1, 2):
@@ -142,42 +145,42 @@ class CarryLookaheadAdder:
     circuit = cirq.Circuit(
         ToffoliDecomposition.
             construct_decomposed_moments(cirq.Circuit(init_comp),
-                                          self.decompositon_strategy[1])
+                                          self.decompositon_strategy[1][0])
     )
 
     # P-round
     circuit += cirq.Circuit(
         ToffoliDecomposition.
             construct_decomposed_moments(cirq.Circuit(p_round_comp),
-                                          self.decompositon_strategy[0])
+                                          self.decompositon_strategy[0][0])
     )
 
     # G-round
     circuit += cirq.Circuit(
         ToffoliDecomposition.
             construct_decomposed_moments(cirq.Circuit(g_round_comp),
-                                          self.decompositon_strategy[1])
+                                          self.decompositon_strategy[1][0])
     )
 
     # C-round
     circuit += cirq.Circuit(
         ToffoliDecomposition.
             construct_decomposed_moments(cirq.Circuit(c_round_comp),
-                                          self.decompositon_strategy[1])
+                                          self.decompositon_strategy[1][0])
     )
 
     # P-inverse
     circuit += cirq.Circuit(
         ToffoliDecomposition.
             construct_decomposed_moments(cirq.Circuit(p_round_comp[::-1]),
-                                          self.decompositon_strategy[0])
+                                          self.decompositon_strategy[0][1])
     )
 
     # Last round
     circuit += cirq.Circuit(
         ToffoliDecomposition.
             construct_decomposed_moments(cirq.Circuit(last_round),
-                                          self.decompositon_strategy[0])
+                                          self.decompositon_strategy[0][0])
     )
 
     """
@@ -190,7 +193,7 @@ class CarryLookaheadAdder:
     circuit += cirq.Circuit(
         ToffoliDecomposition.
             construct_decomposed_moments(cirq.Circuit(p_round_uncom),
-                                          self.decompositon_strategy[0])
+                                          self.decompositon_strategy[0][0])
     )
 
     # C-round uncomputation
@@ -198,7 +201,7 @@ class CarryLookaheadAdder:
     circuit += cirq.Circuit(
         ToffoliDecomposition.
             construct_decomposed_moments(cirq.Circuit(c_round_uncomp),
-                                          self.decompositon_strategy[1])
+                                          self.decompositon_strategy[1][1])
     )
 
     # G-round uncomputation
@@ -208,7 +211,7 @@ class CarryLookaheadAdder:
     circuit += cirq.Circuit(
         ToffoliDecomposition.
             construct_decomposed_moments(cirq.Circuit(g_round_uncomp),
-                                          self.decompositon_strategy[1])
+                                          self.decompositon_strategy[1][1])
     )
 
     # P-round uncomputation inverse
@@ -216,7 +219,7 @@ class CarryLookaheadAdder:
     circuit += cirq.Circuit(
         ToffoliDecomposition.
             construct_decomposed_moments(cirq.Circuit(p_round_uncom[::-1]),
-                                          self.decompositon_strategy[0])
+                                          self.decompositon_strategy[0][1])
     )
     
     # last moment of X gates

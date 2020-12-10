@@ -41,7 +41,10 @@ class ToffoliDecompType(Enum):
 
     # Relative phase Toffoli (Figure 18/19 from arxiv:2010.00255)
     ZERO_ANCILLA_CNOT_3 = auto
+    ZERO_ANCILLA_CNOT_3_INV = auto
+    
     ZERO_ANCILLA_CNOT_4 = auto
+    ZERO_ANCILLA_CNOT_4_INV = auto
 
 
 class ToffoliDecomposition():
@@ -512,6 +515,19 @@ class ToffoliDecomposition():
                 cirq.H(self.target_qubit)
             ]
 
+        elif self.decomp_type == ToffoliDecompType.ZERO_ANCILLA_CNOT_3_INV:
+            moments = [
+                cirq.H(self.target_qubit),
+                cirq.T(self.target_qubit),
+                cirq.CNOT(self.qubits[1], self.target_qubit),
+                cirq.T(self.target_qubit) ** -1,
+                cirq.CNOT(self.qubits[0], self.target_qubit),
+                cirq.T(self.target_qubit),
+                cirq.CNOT(self.qubits[1], self.target_qubit),
+                cirq.T(self.target_qubit) ** -1,
+                cirq.H(self.target_qubit)
+            ]
+
             return moments
 
         elif self.decomp_type == ToffoliDecompType.ZERO_ANCILLA_CNOT_4:
@@ -525,6 +541,20 @@ class ToffoliDecomposition():
                 cirq.T(self.target_qubit) ** -1,
                 cirq.CNOT(self.qubits[0], self.target_qubit),
                 cirq.T(self.target_qubit),
+                cirq.H(self.target_qubit)
+            ]
+
+        elif self.decomp_type == ToffoliDecompType.ZERO_ANCILLA_CNOT_4_INV:
+            moments = [
+                cirq.H(self.target_qubit),
+                cirq.T(self.target_qubit) ** -1,
+                cirq.CNOT(self.qubits[0], self.target_qubit),
+                cirq.T(self.target_qubit),
+                cirq.CNOT(self.qubits[1], self.target_qubit),
+                cirq.T(self.target_qubit) ** -1,
+                cirq.CNOT(self.qubits[0], self.target_qubit),
+                cirq.T(self.target_qubit),
+                cirq.CNOT(self.qubits[1], self.target_qubit),
                 cirq.H(self.target_qubit)
             ]
 

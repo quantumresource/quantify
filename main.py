@@ -128,18 +128,33 @@ def main():
     """
     # Size of the operand; At this stage always gives the even number >= to the wanted size
     n = 10
-    
-    # First operand
     A = [cirq.NamedQubit("A"+str(i)) for i in range(n)]
-    
-    # Second operand
+        
+        # Second operand
     B = [cirq.NamedQubit("B"+str(i)) for i in range(n)]
     
     # CLA class with the default decomposition strategy (NO_DECOMP)
-    cl = CarryLookaheadAdder(A, B)
-    
+    decompositon_strategy = [(ToffoliDecompType.NO_DECOMP, ToffoliDecompType.NO_DECOMP)]*2
+    cl = CarryLookaheadAdder(A, B, decompositon_strategy=decompositon_strategy)
     # Printing the CLA circuit
-    print(cl.circuit)
+    # print(cl.circuit)
+
+
+    results = []
+    for n in range(8, 32, 2):
+        
+        # First operand
+        A = [cirq.NamedQubit("A"+str(i)) for i in range(n)]
+        
+        # Second operand
+        B = [cirq.NamedQubit("B"+str(i)) for i in range(n)]
+        
+        # CLA class with the default decomposition strategy (NO_DECOMP)
+        decompositon_strategy = [(ToffoliDecompType.NO_DECOMP, ToffoliDecompType.NO_DECOMP)]*2
+        cl = CarryLookaheadAdder(A, B, decompositon_strategy=decompositon_strategy)
+        # Printing the CLA circuit
+        results.append(len(cl.circuit))
+    print(results)
 
 if __name__ == "__main__":
     main()
