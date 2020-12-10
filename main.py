@@ -1,13 +1,13 @@
 import cirq
-from qramcircuits.toffoli_decomposition import ToffoliDecompType
-
+from qramcircuits.toffoli_decomposition import ToffoliDecompType, ToffoliDecomposition
+from mathematics.draper0406142 import CarryLookaheadAdder
 import qramcircuits.bucket_brigade as bb
 
 import optimizers as qopt
 
 
 def main():
-
+    """
     print("Hello QRAM circuits!")
     
     #Create the qubis of the circuits
@@ -26,7 +26,7 @@ def main():
     #
 
     """
-        Bucket brigade
+       # Bucket brigade
     """
     print("*** Bucket Brigade:")
 
@@ -122,7 +122,10 @@ def main():
     # print("Verify T_c:      {}\n".format(sdlwcircuit.verify_T_count()))
     # print("Verify H_c:      {}\n".format(sdlwcircuit.verify_hadamard_count()))
     # print("Verify CNOT_c:   {}\n".format(sdlwcircuit.verify_cnot_count()))
-
+    A = [cirq.NamedQubit("A"+str(i)) for i in range(10)]
+    B = [cirq.NamedQubit("B"+str(i)) for i in range(10)]
+    cl = CarryLookaheadAdder(A, B)
+    print(cl.circuit)
 
 if __name__ == "__main__":
     main()

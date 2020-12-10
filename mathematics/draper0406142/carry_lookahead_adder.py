@@ -2,13 +2,16 @@
 
 import cirq
 import math as mt
+from qramcircuits.toffoli_decomposition import ToffoliDecomposition, ToffoliDecompType
 
 class CarryLookaheadAdder:
-  def __init__(self, A, B):
+  def __init__(self, A, B, decompositon_strategy = [ToffoliDecompType.NO_DECOMP]*2):
     self.A, self.B = A, B
+    self.rounds = self.construct_rounds()
+    self.decompositon_strategy = decompositon_strategy
     self.circuit = self.construct_circuit()
-
-  def construct_circuit(self):
+    
+  def construct_rounds(self):
     n = len(self.A)
     init = []
     p_round = []
@@ -131,5 +134,105 @@ class CarryLookaheadAdder:
       o1 = o2
       o2 += (o2-1)//2
 
-      circuit = cirq.Circuit(init, p_round, g_round, c_round)
-      return circuit
+    # Last round 
+    last_round = [cirq.CNOT(ancillae1[i], self.B[i+1]) for i in range(n-1)]
+    last_round += [cirq.X(self.B[i]) for i in range(n-1)]
+    last_round += [cirq.CNOT(self.A[i], self.B[i]) for i in range(1,n-1)]
+    
+    
+    return init, p_round, g_round, c_round[::-1], last_round
+
+  def construct_circuit(self):
+
+    """
+      Computation part of the circuit
+    """
+    init_comp, p_round_comp, g_round_comp, c_round_comp, last_round = self.construct_rounds()
+    
+    # Init 
+    circuit = cirq.Circuit(
+        ToffoliDecomposition.
+            construct_decomposed_moments(cirq.Circuit(init_comp),
+                                          self.decompositon_strategy[1])
+    )
+
+    # P-round
+    circuit += cirq.Circuit(
+        ToffoliDecomposition.
+            construct_decomposed_moments(cirq.Circuit(p_round_comp),
+                                          self.decompositon_strategy[0])
+    )
+
+    # G-round
+    circuit += cirq.Circuit(
+        ToffoliDecomposition.
+            construct_decomposed_moments(cirq.Circuit(g_round_comp),
+                                          self.decompositon_strategy[1])
+    )
+
+    # C-round
+    circuit += cirq.Circuit(
+        ToffoliDecomposition.
+            construct_decomposed_moments(cirq.Circuit(c_round_comp),
+                                          self.decompositon_strategy[1])
+    )
+
+    # P-inverse
+    circuit += cirq.Circuit(
+        ToffoliDecomposition.
+            construct_decomposed_moments(cirq.Circuit(p_round_comp[::-1]),
+                                          self.decompositon_strategy[0])
+    )
+
+    # Last round
+    circuit += cirq.Circuit(
+        ToffoliDecomposition.
+            construct_decomposed_moments(cirq.Circuit(last_round),
+                                          self.decompositon_strategy[0])
+    )
+
+    """
+      Uncomputation part of the circuit
+    """
+
+    index = (len(self.A)-2)//2
+
+    p_round_uncom = p_round_comp[:index-1] + p_round_comp[index:]
+    circuit += cirq.Circuit(
+        ToffoliDecomposition.
+            construct_decomposed_moments(cirq.Circuit(p_round_uncom),
+                                          self.decompositon_strategy[0])
+    )
+
+    # C-round uncomputation
+    c_round_uncomp = c_round_comp[::-1][:-1]
+    circuit += cirq.Circuit(
+        ToffoliDecomposition.
+            construct_decomposed_moments(cirq.Circuit(c_round_uncomp),
+                                          self.decompositon_strategy[1])
+    )
+
+    # G-round uncomputation
+    g_round_uncomp = g_round_comp[:index] + g_round_comp[index+1:]
+    g_round_uncomp = g_round_uncomp[::-1]
+
+    circuit += cirq.Circuit(
+        ToffoliDecomposition.
+            construct_decomposed_moments(cirq.Circuit(g_round_uncomp),
+                                          self.decompositon_strategy[1])
+    )
+
+    # P-round uncomputation inverse
+    p_round_uncom = p_round_comp[:index-1] + p_round_comp[index:]
+    circuit += cirq.Circuit(
+        ToffoliDecomposition.
+            construct_decomposed_moments(cirq.Circuit(p_round_uncom[::-1]),
+                                          self.decompositon_strategy[0])
+    )
+    
+    # last moment of X gates
+    x_moment = [cirq.X(self.B[i]) for i in range(n-1)]
+
+    circuit.append(x_moment)
+    return circuit
+
