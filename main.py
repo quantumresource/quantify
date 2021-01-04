@@ -1,13 +1,13 @@
 import cirq
-from qramcircuits.toffoli_decomposition import ToffoliDecompType
-
+from qramcircuits.toffoli_decomposition import ToffoliDecompType, ToffoliDecomposition
+from mathematics.draper0406142 import CarryLookaheadAdder
 import qramcircuits.bucket_brigade as bb
 
 import optimizers as qopt
 
 
 def main():
-
+    """
     print("Hello QRAM circuits!")
     
     #Create the qubis of the circuits
@@ -26,7 +26,7 @@ def main():
     #
 
     """
-        Bucket brigade
+       # Bucket brigade
     """
     print("*** Bucket Brigade:")
 
@@ -122,7 +122,39 @@ def main():
     # print("Verify T_c:      {}\n".format(sdlwcircuit.verify_T_count()))
     # print("Verify H_c:      {}\n".format(sdlwcircuit.verify_hadamard_count()))
     # print("Verify CNOT_c:   {}\n".format(sdlwcircuit.verify_cnot_count()))
+    
+    """
+        CLA example
+    """
+    # Size of the operand; At this stage always gives the even number >= to the wanted size
+    n = 10
+    A = [cirq.NamedQubit("A"+str(i)) for i in range(n)]
+        
+        # Second operand
+    B = [cirq.NamedQubit("B"+str(i)) for i in range(n)]
+    
+    # CLA class with the default decomposition strategy (NO_DECOMP)
+    decompositon_strategy = [(ToffoliDecompType.NO_DECOMP, ToffoliDecompType.NO_DECOMP)]*2
+    cl = CarryLookaheadAdder(A, B, decompositon_strategy=decompositon_strategy)
+    # Printing the CLA circuit
+    # print(cl.circuit)
 
+
+    results = []
+    for n in range(8, 32, 2):
+        
+        # First operand
+        A = [cirq.NamedQubit("A"+str(i)) for i in range(n)]
+        
+        # Second operand
+        B = [cirq.NamedQubit("B"+str(i)) for i in range(n)]
+        
+        # CLA class with the default decomposition strategy (NO_DECOMP)
+        decompositon_strategy = [(ToffoliDecompType.NO_DECOMP, ToffoliDecompType.NO_DECOMP)]*2
+        cl = CarryLookaheadAdder(A, B, decompositon_strategy=decompositon_strategy)
+        # Printing the CLA circuit
+        results.append(len(cl.circuit))
+    print(results)
 
 if __name__ == "__main__":
     main()
